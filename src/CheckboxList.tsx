@@ -31,6 +31,18 @@ const CheckboxList: React.FC = () => {
         setCheckedItems(updatedItems);
     };
 
+    const handleConfirm = () => {
+        alert('Confirmed: ' + JSON.stringify(checkedItems, null, 2));
+    };
+
+    const handleCancel = () => {
+        const resetItems = Object.keys(checkedItems).reduce((items, key) => {
+            items[key] = false;
+            return items;
+        }, {} as CheckedItems);
+        setCheckedItems(resetItems);
+    };
+
     const allChecked = Object.values(checkedItems).every(Boolean);
     const checkedCount = Object.values(checkedItems).filter(Boolean).length;
     const totalCount = Object.keys(checkedItems).length;
@@ -40,10 +52,10 @@ const CheckboxList: React.FC = () => {
             <div
                 className="checkbox-container"
                 onClick={handleSelectAll}
-                style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                style={{display: 'flex', alignItems: 'center', cursor: 'pointer'}}
             >
-                {allChecked ? <CheckedIcon /> : <UncheckedIcon />}
-                <span style={{ marginLeft: 8 }}>Select All</span>
+                {allChecked ? <CheckedIcon/> : <UncheckedIcon/>}
+                <span style={{marginLeft: 8}}>Select All</span>
             </div>
             <div>
                 {Object.keys(checkedItems).map((item) => (
@@ -51,17 +63,21 @@ const CheckboxList: React.FC = () => {
                         key={item}
                         className="checkbox-container"
                         onClick={() =>
-                            handleChange({ target: { name: item } } as React.ChangeEvent<HTMLInputElement>)
+                            handleChange({target: {name: item}} as React.ChangeEvent<HTMLInputElement>)
                         }
-                        style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                        style={{display: 'flex', alignItems: 'center', cursor: 'pointer'}}
                     >
-                        {checkedItems[item] ? <CheckedIcon /> : <UncheckedIcon />}
-                        <span style={{ marginLeft: 8 }}>{item}</span>
+                        {checkedItems[item] ? <CheckedIcon/> : <UncheckedIcon/>}
+                        <span style={{marginLeft: 8}}>{item}</span>
                     </div>
                 ))}
             </div>
-            <div style={{ marginTop: 16 }}>
+            <div style={{marginTop: 16}}>
                 Checked: {checkedCount} / Total: {totalCount}
+            </div>
+            <div style={{marginTop: 16, display: 'flex', gap: '10px'}}>
+                <button onClick={handleConfirm}>Confirm</button>
+                <button onClick={handleCancel}>Cancel</button>
             </div>
         </div>
     );
